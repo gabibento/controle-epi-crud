@@ -1,3 +1,5 @@
+package entidades;
+
 public class Usuario {
     private int id;
     private static int incrementador;
