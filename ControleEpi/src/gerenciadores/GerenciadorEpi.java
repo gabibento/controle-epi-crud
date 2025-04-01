@@ -64,6 +64,13 @@ public class GerenciadorEpi {
            atualizarEpi();
        }
     }
-
+    public void removerEpi(){
+        try{
+            Epi epi = buscarEpi();
+            epis.remove(epi);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
