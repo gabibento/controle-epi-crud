@@ -24,34 +24,30 @@ public class GerenciadorEmprestimo {
     }
 
     public void criarEmprestimo() {
-        //adicionar try catch??
         System.out.println("Colaboradores");
         gerenciadorUsuario.listarNomesUsuarios();
-        System.out.println("Digite o índice do colaborador: ");
 
-        Usuario usuario = gerenciadorUsuario.buscarUsuario();//Colocar -1
+        Usuario usuario = gerenciadorUsuario.buscarUsuario();
 
         System.out.println("EPIs");
         gerenciadorEpi.listarEpis();
-        System.out.println("Digite o índice da epi: ");
 
-        Epi epi = gerenciadorEpi.buscarEpi();//Colocar -1
+        Epi epi = gerenciadorEpi.buscarEpi();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate dataDevolucao;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataDevolucao;
 
-        System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
-        String input = scanner.nextLine();
-        dataDevolucao = LocalDate.parse(input, formatter);
-        System.out.println("Data de devolução: " + dataDevolucao);
+            System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+            String input = scanner.nextLine();
+            dataDevolucao = LocalDate.parse(input, formatter);
 
-        Emprestimo emprestimo = new Emprestimo(epi, usuario, dataDevolucao);//verificar se a dataDevolucao está correta
-        emprestimos.add(emprestimo);
-        System.out.println("Empréstimo criado com sucesso!");
-        System.out.println("Colaborador: " + usuario.getNome());
-        System.out.println("EPI: " + epi.getNome());
-        System.out.println("Data de Empréstimo: " + emprestimo.getDataEmprestimo());
-        System.out.println("Data de Devolução: " + emprestimo.getDataDevolucao());
+            Emprestimo emprestimo = new Emprestimo(epi, usuario, dataDevolucao);
+            emprestimos.add(emprestimo);
+            System.out.println("Empréstimo criado com sucesso!");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public void listarEmprestimos() {
@@ -63,7 +59,7 @@ public class GerenciadorEmprestimo {
             listarEmprestimos();
             System.out.println("Digite o índice do empréstimo: ");
 
-            Emprestimo emprestimo = emprestimos.get(scanner.nextInt());
+            Emprestimo emprestimo = emprestimos.get(scanner.nextInt() - 1);
             scanner.nextLine();
             if (emprestimo == null)
                 throw new IllegalArgumentException("Erro ao encontrar empréstimo. Tente novamente!");
