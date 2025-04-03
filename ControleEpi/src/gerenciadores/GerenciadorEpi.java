@@ -31,19 +31,19 @@ public class GerenciadorEpi {
         epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.getNome() + " - " + epi.getQuantidade()));
     }
     public Epi buscarEpi(){
-      try{
-           listarEpis();
-           System.out.println("Digite o índice do EPI: ");
+      while(true){
+          try{
+              listarEpis();
+              System.out.println("Digite o índice do EPI: ");
 
-           Epi epi = epis.get(scanner.nextInt() - 1);
-           scanner.nextLine();
-           if(epi == null) throw new IllegalArgumentException("Erro ao encontrar EPI. Tente novamente!");
-           return epi;
-       } catch (Exception e) {
-           System.out.println(e.getMessage());
-           buscarEpi();
-       }
-       return null;
+              Epi epi = epis.get(scanner.nextInt() - 1);
+              scanner.nextLine();
+              if(epi == null) throw new IllegalArgumentException("Erro ao encontrar EPI. Tente novamente!");
+              return epi;
+          } catch (Exception e) {
+              System.out.println(e.getMessage());
+          }
+      }
     }
     public void atualizarEpi(){
        try{

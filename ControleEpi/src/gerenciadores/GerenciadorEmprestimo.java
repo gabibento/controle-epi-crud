@@ -24,16 +24,12 @@ public class GerenciadorEmprestimo {
     }
 
     public void criarEmprestimo() {
-
         try{
             System.out.println("Colaboradores");
-            gerenciadorUsuario.listarNomesUsuarios();
 
             Usuario usuario = gerenciadorUsuario.buscarUsuario();
 
             System.out.println("EPIs");
-            gerenciadorEpi.listarEpis();
-
             Epi epi = gerenciadorEpi.buscarEpi();
 
             emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
