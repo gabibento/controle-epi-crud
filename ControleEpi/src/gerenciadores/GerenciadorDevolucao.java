@@ -11,10 +11,11 @@ public class GerenciadorDevolucao {
     Scanner scanner = new Scanner(System.in);
     private List<Devolucao> devolucoes;
 
-    GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo();
+    GerenciadorEmprestimo gerenciadorEmprestimo;
 
-    public GerenciadorDevolucao() {
+    public GerenciadorDevolucao(GerenciadorEmprestimo gerenciadorEmprestimo) {
        devolucoes = new ArrayList<>();
+       this.gerenciadorEmprestimo = gerenciadorEmprestimo;
     }
 
     public void criarDevolucao(){

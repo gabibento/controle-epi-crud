@@ -14,12 +14,13 @@ public class GerenciadorEmprestimo {
     Scanner scanner = new Scanner(System.in);
     private List<Emprestimo> emprestimos;
 
-    GerenciadorUsuario gerenciadorUsuario = new GerenciadorUsuario();
-    GerenciadorEpi gerenciadorEpi = new GerenciadorEpi();
+    GerenciadorUsuario gerenciadorUsuario;
+    GerenciadorEpi gerenciadorEpi;
 
-    public GerenciadorEmprestimo() {
+    public GerenciadorEmprestimo(GerenciadorUsuario gerenciadorUsuario, GerenciadorEpi gerenciadorEpi) {
         emprestimos = new ArrayList<>();
-
+        this.gerenciadorUsuario = gerenciadorUsuario;
+        this.gerenciadorEpi = gerenciadorEpi;
     }
 
     public void criarEmprestimo() {

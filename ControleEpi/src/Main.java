@@ -10,8 +10,8 @@ public class Main {
      static final Scanner scanner = new Scanner(System.in);
      static final GerenciadorEpi gerenciadorEpi = new GerenciadorEpi();
      static final GerenciadorUsuario gerenciadorUsuario = new GerenciadorUsuario();
-     static final GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo();
-     static final GerenciadorDevolucao gerenciadorDevolucao = new GerenciadorDevolucao();
+     static final GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo(gerenciadorUsuario, gerenciadorEpi);
+     static final GerenciadorDevolucao gerenciadorDevolucao = new GerenciadorDevolucao(gerenciadorEmprestimo);
 
 
     public static void main(String[] args) {
