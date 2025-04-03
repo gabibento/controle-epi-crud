@@ -55,6 +55,8 @@ public class GerenciadorDevolucao {
 
             System.out.println("1. Atualizar empréstimo\n2. Atualizar data de devolução");
             int opcao = scanner.nextInt();
+            scanner.nextLine();
+
             if (opcao == 1) {
                 gerenciadorEmprestimo.listarEmprestimos();
                 devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());

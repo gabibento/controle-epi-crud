@@ -56,6 +56,8 @@ public class GerenciadorUsuario {
 
             System.out.println("1. Atualizar nome\n2. Atualizar e-mail");
             int opcao = scanner.nextInt();
+            scanner.nextLine();
+
             if (opcao == 1) {
                 System.out.println("Novo nome: ");
                 usuario.setNome(scanner.nextLine());

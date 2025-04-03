@@ -76,14 +76,12 @@ public class GerenciadorEmprestimo {
     public void atualizarEmprestimo(){
         try{
             Emprestimo emprestimo = buscarEmprestimo();
-            System.out.printf("1. Atualizar usuário" +"\n2. Atualizar EPI" + "\n3. Atualizar data de empréstimo" + "\n4. Atualizar data de devolução");
+            System.out.print("1. Atualizar usuário" +"\n2. Atualizar EPI" + "\n3. Atualizar data de empréstimo" + "\n4. Atualizar data de devolução");
             int opcao = scanner.nextInt();
 
             switch (opcao){
-                case 1: gerenciadorUsuario.listarUsuarios();
-                    emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
-                case 2: gerenciadorEpi.listarEpis();
-                    emprestimo.setEpi(gerenciadorEpi.buscarEpi());
+                case 1: emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
+                case 2: emprestimo.setEpi(gerenciadorEpi.buscarEpi());
                 case 3: System.out.println("Digite a data de empréstimo (DD/MM/AAAA): ");
                     emprestimo.setDataEmprestimo(buscarData());
                 case 4:System.out.println("Digite a data de devolução (DD/MM/AAAA): ");

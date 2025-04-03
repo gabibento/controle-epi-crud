@@ -50,6 +50,8 @@ public class GerenciadorEpi {
            Epi epi = buscarEpi();
            System.out.println("1. Atualizar nome \n2. Atualizar quantidade");
            int opcao = scanner.nextInt();
+           scanner.nextLine();
+
            if(opcao == 1){
                System.out.println("Novo nome: ");
                epi.setNome(scanner.nextLine());
