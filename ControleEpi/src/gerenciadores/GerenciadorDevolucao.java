@@ -2,10 +2,7 @@ package gerenciadores;
 
 import entidades.Devolucao;
 import entidades.Emprestimo;
-import entidades.Usuario;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +17,10 @@ public class GerenciadorDevolucao {
         Emprestimo emprestimo = gerenciadorEmprestimo.buscarEmprestimo();
 
         try{
-            devolucoes.add(new Devolucao(emprestimo, gerenciadorEmprestimo.buscarDataDevolucao()));
+            System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+            LocalDate data = gerenciadorEmprestimo.buscarData();
+
+            devolucoes.add(new Devolucao(emprestimo, data));
             System.out.println("Devolução criada com sucesso!");
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -54,7 +54,8 @@ public class GerenciadorDevolucao {
                 gerenciadorEmprestimo.listarEmprestimos();
                 devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());
             } else if (opcao == 2) {
-                devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarDataDevolucao());
+                System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+                devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarData());
             } else {
                 throw new IllegalArgumentException("Opção inválida. Tente novamente!");
             }
