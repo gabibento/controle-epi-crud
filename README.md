@@ -62,11 +62,11 @@ Este projeto foi desenvolvido para fins acadêmicos e práticos no estudo de Jav
     </td>
     <td align="center">
       <img src="https://github.com/Nathalia-Ohana.png" width="100" style="border-radius:50%"><br>
-      <a href="https://github.com/tainaestefani">Nathália Ohana</a>
+      <a href="https://github.com//Nathalia-Ohana">Nathália Ohana</a>
     </td>
     <td align="center">
       <img src="https://github.com/tainaestefani.png" width="100" style="border-radius:50%"><br>
-      <a href="https://github.com/github2">Tainá Estefani</a>
+      <a href="https://github.com/tainaestefani">Tainá Estefani</a>
     </td>
   </tr>
 </table>
