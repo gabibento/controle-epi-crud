@@ -3,6 +3,7 @@ package gerenciadores;
 import entidades.Devolucao;
 import entidades.Emprestimo;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,6 +12,10 @@ public class GerenciadorDevolucao {
     private List<Devolucao> devolucoes;
 
     GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo();
+
+    public GerenciadorDevolucao() {
+       devolucoes = new ArrayList<>();
+    }
 
     public void criarDevolucao(){
         System.out.println("Empréstimo: ");
