@@ -41,7 +41,8 @@ public class GerenciadorEmprestimo {
     }
 
     public void listarEmprestimos() {
-        emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " + emprestimo.toString()));
+        if(emprestimos.isEmpty()) System.out.println("Não há empréstimos cadastrados");
+        else emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " + emprestimo.toString()));
     }
 
     public Emprestimo buscarEmprestimo() {
@@ -113,6 +114,7 @@ public class GerenciadorEmprestimo {
     public void removerEmprestimo(){
         try {
             emprestimos.remove(buscarEmprestimo());
+            System.out.println("Empréstimo removido com sucesso!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

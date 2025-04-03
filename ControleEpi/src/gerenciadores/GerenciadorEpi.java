@@ -16,10 +16,10 @@ public class GerenciadorEpi {
     }
 
     public void cadastrarEpi(){
-        System.out.println("Nome: ");
+        System.out.print("Nome: ");
         String nome = scanner.next();
 
-        System.out.println("Quantidade: ");
+        System.out.print("Quantidade: ");
         int quantidade = scanner.nextInt();
 
         Epi epi = new Epi(nome, quantidade);
@@ -28,13 +28,14 @@ public class GerenciadorEpi {
         System.out.println("Epi adicionada com sucesso!");
     }
     public void listarEpis(){
-        epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.toString()));
+        if(epis.isEmpty()) System.out.println("Não há EPIs cadastradas");
+        else epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.toString()));
     }
     public Epi buscarEpi(){
       while(true){
           try{
               listarEpis();
-              System.out.println("Digite o índice do EPI: ");
+              System.out.print("Digite o índice do EPI: ");
 
               Epi epi = epis.get(scanner.nextInt() - 1);
               scanner.nextLine();
@@ -50,15 +51,15 @@ public class GerenciadorEpi {
            Epi epi = buscarEpi();
 
            while(true){
-               System.out.println("1. Atualizar nome \n2. Atualizar quantidade\n3. Voltar");
+               System.out.print("1. Atualizar nome \n2. Atualizar quantidade\n3. Voltar\nDigite uma opção: ");
                int opcao = scanner.nextInt();
                scanner.nextLine();
 
                if(opcao == 1){
-                   System.out.println("Novo nome: ");
+                   System.out.print("Novo nome: ");
                    epi.setNome(scanner.nextLine());
                }else if(opcao == 2){
-                   System.out.println("Nova quantidade: ");
+                   System.out.print("Nova quantidade: ");
                    epi.setQuantidade(scanner.nextInt());
                }
                else if(opcao == 3) break;
@@ -75,6 +76,7 @@ public class GerenciadorEpi {
         try{
             Epi epi = buscarEpi();
             epis.remove(epi);
+            System.out.println("EPI removida com sucesso!");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

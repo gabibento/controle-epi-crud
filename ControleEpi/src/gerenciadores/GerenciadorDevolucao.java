@@ -23,7 +23,7 @@ public class GerenciadorDevolucao {
         Emprestimo emprestimo = gerenciadorEmprestimo.buscarEmprestimo();
 
         try{
-            System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+            System.out.print("Digite a data de devolução (DD/MM/AAAA): ");
             LocalDate data = gerenciadorEmprestimo.buscarData();
 
             devolucoes.add(new Devolucao(emprestimo, data));
@@ -33,12 +33,13 @@ public class GerenciadorDevolucao {
         }
     }
     public void listarDevolucoes() {
-        devolucoes.forEach(devolucao -> System.out.println((devolucoes.indexOf(devolucao) + 1) + ": " + devolucao.toString()));
+        if(devolucoes.isEmpty()) System.out.println("Não há devoluções cadastradas");
+        else devolucoes.forEach(devolucao -> System.out.println((devolucoes.indexOf(devolucao) + 1) + ": " + devolucao.toString()));
     }
     public Devolucao buscarDevolucao(){
         try {
             listarDevolucoes();
-            System.out.println("Digite o índice da devolução: ");
+            System.out.print("Digite o índice da devolução: ");
 
             Devolucao devolucao = devolucoes.get(scanner.nextInt() - 1);
             scanner.nextLine();
@@ -55,7 +56,7 @@ public class GerenciadorDevolucao {
             Devolucao devolucao = buscarDevolucao();
 
            while(true){
-               System.out.println("1. Atualizar empréstimo\n2. Atualizar data de devolução\n3. Voltar");
+               System.out.print("1. Atualizar empréstimo\n2. Atualizar data de devolução\n3. Voltar\nDigite uma opção: ");
                int opcao = scanner.nextInt();
                scanner.nextLine();
 
@@ -63,7 +64,7 @@ public class GerenciadorDevolucao {
                    gerenciadorEmprestimo.listarEmprestimos();
                    devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());
                } else if (opcao == 2) {
-                   System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+                   System.out.print("Digite a data de devolução (DD/MM/AAAA): ");
                    devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarData());
                } else if(opcao == 3) break;
                else {
@@ -78,6 +79,7 @@ public class GerenciadorDevolucao {
     public void removerDevolucao(){
         try {
             devolucoes.remove(buscarDevolucao());
+            System.out.println("Devolução removida com sucesso!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

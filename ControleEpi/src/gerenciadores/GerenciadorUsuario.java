@@ -15,10 +15,10 @@ public class GerenciadorUsuario {
     }
 
     public void cadastrarUsuario() {
-        System.out.println("Nome: ");
+        System.out.print("Nome: ");
         String nome = scanner.nextLine();
 
-        System.out.println("E-mail: ");
+        System.out.print("E-mail: ");
         String email = scanner.nextLine();
 
         Usuario usuario = new Usuario(nome, email);
@@ -28,23 +28,25 @@ public class GerenciadorUsuario {
     }
 
     public void listarUsuarios() {
-        usuarios.forEach(usuario -> System.out.println((usuarios.indexOf(usuario) + 1) + ": " + usuario.toString()));
+        if(usuarios.isEmpty()) System.out.println("Não há usuários cadastrados");
+        else usuarios.forEach(usuario -> System.out.println((usuarios.indexOf(usuario) + 1) + ": " + usuario.toString()));
     }
 
     public Usuario buscarUsuario() {
-        try {
-            listarUsuarios();
-            System.out.println("Digite o índice do usuário: ");
+     while (true){
+         try {
+             listarUsuarios();
+             System.out.print("Digite o índice do usuário: ");
 
-            Usuario usuario = usuarios.get(scanner.nextInt() - 1);
-            scanner.nextLine();
-            if (usuario == null) throw new IllegalArgumentException("Erro ao encontrar usuário. Tente novamente!");
-            return usuario;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            buscarUsuario();
-        }
-        return null;
+             Usuario usuario = usuarios.get(scanner.nextInt() - 1);
+             scanner.nextLine();
+             if (usuario == null) throw new IllegalArgumentException("Erro ao encontrar usuário. Tente novamente!");
+             return usuario;
+         } catch (Exception e) {
+             System.out.println(e.getMessage());
+             buscarUsuario();
+         }
+     }
     }
 
     public void atualizarUsuario() {
@@ -52,20 +54,20 @@ public class GerenciadorUsuario {
             Usuario usuario = buscarUsuario();
 
             while(true){
-                System.out.println("1. Atualizar nome\n2. Atualizar e-mail\n3. Voltar");
+                System.out.print("1. Atualizar nome\n2. Atualizar e-mail\n3. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
                 scanner.nextLine();
                 if (opcao == 1) {
-                    System.out.println("Novo nome: ");
+                    System.out.print("Novo nome: ");
                     usuario.setNome(scanner.nextLine());
                 } else if (opcao == 2) {
-                    System.out.println("Novo e-mail: ");
+                    System.out.print("Novo e-mail: ");
                     usuario.setEmail(scanner.nextLine());
                 } else if(opcao == 3) break;
                 else {
                     throw new IllegalArgumentException("Opção inválida. Tente novamente!");
                 }
-                System.out.println("Usuário atualizado com sucesso!");
+                System.out.println("Usuário atualizado com sucesso!\n");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -76,6 +78,7 @@ public class GerenciadorUsuario {
         try {
             Usuario usuario = buscarUsuario();
             usuarios.remove(usuario);
+            System.out.println("Usuário removido com sucesso!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
