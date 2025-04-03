@@ -47,4 +47,14 @@ public class Emprestimo {
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
+
+    @Override
+    public String toString() {
+        return "Emprestimo:\n" +
+                "    epi: " + epi.getNome() + ",\n" +
+                "    usuario: " + usuario.getNome() + ",\n" +
+                "    dataEmprestimo: " + dataEmprestimo + ",\n" +
+                "    dataDevolucao: " + dataDevolucao;
+    }
+
 }
