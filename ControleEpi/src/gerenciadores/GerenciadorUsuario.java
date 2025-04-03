@@ -55,25 +55,27 @@ public class GerenciadorUsuario {
         try {
             Usuario usuario = buscarUsuario();
 
-            System.out.println("1. Atualizar nome\n2. Atualizar e-mail");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
-
-            if (opcao == 1) {
-                System.out.println("Novo nome: ");
-                usuario.setNome(scanner.nextLine());
-            } else if (opcao == 2) {
-                System.out.println("Novo e-mail: ");
-                usuario.setEmail(scanner.nextLine());
-            } else {
-                throw new IllegalArgumentException("Opção inválida. Tente novamente!");
+            while(true){
+                System.out.println("1. Atualizar nome\n2. Atualizar e-mail\n3. Voltar");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+                if (opcao == 1) {
+                    System.out.println("Novo nome: ");
+                    usuario.setNome(scanner.nextLine());
+                } else if (opcao == 2) {
+                    System.out.println("Novo e-mail: ");
+                    usuario.setEmail(scanner.nextLine());
+                } else if(opcao == 3) break;
+                else {
+                    throw new IllegalArgumentException("Opção inválida. Tente novamente!");
+                }
+                System.out.println("Usuário atualizado com sucesso!");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             atualizarUsuario();
         }
     }
-
     public void removerUsuario() {
         try {
             Usuario usuario = buscarUsuario();

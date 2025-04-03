@@ -76,16 +76,29 @@ public class GerenciadorEmprestimo {
     public void atualizarEmprestimo(){
         try{
             Emprestimo emprestimo = buscarEmprestimo();
-            System.out.print("1. Atualizar usuário" +"\n2. Atualizar EPI" + "\n3. Atualizar data de empréstimo" + "\n4. Atualizar data de devolução");
-            int opcao = scanner.nextInt();
 
-            switch (opcao){
-                case 1: emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
-                case 2: emprestimo.setEpi(gerenciadorEpi.buscarEpi());
-                case 3: System.out.println("Digite a data de empréstimo (DD/MM/AAAA): ");
-                    emprestimo.setDataEmprestimo(buscarData());
-                case 4:System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
-                    emprestimo.setDataDevolucao(buscarData());
+            while(true){
+                System.out.print("1. Atualizar usuário\n" +
+                        "2. Atualizar EPI\n" +
+                        "3. Atualizar data de empréstimo\n" +
+                        "4. Atualizar data de devolução\n" +
+                        "5. Voltar");
+                int opcao = scanner.nextInt();
+
+                if(opcao == 5) break;
+
+                switch (opcao){
+                    case 1 -> emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
+                    case 2 -> emprestimo.setEpi(gerenciadorEpi.buscarEpi());
+                    case 3 -> {
+                        System.out.println("Digite a data de empréstimo (DD/MM/AAAA): ");
+                        emprestimo.setDataEmprestimo(buscarData());
+                    }
+                    case 4 -> {
+                        System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+                        emprestimo.setDataDevolucao(buscarData());
+                    }
+                }
             }
         }catch (Exception e){
             System.out.println(e.getMessage());

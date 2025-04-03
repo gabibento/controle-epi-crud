@@ -53,19 +53,22 @@ public class GerenciadorDevolucao {
         try {
             Devolucao devolucao = buscarDevolucao();
 
-            System.out.println("1. Atualizar empréstimo\n2. Atualizar data de devolução");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+           while(true){
+               System.out.println("1. Atualizar empréstimo\n2. Atualizar data de devolução\n3. Voltar");
+               int opcao = scanner.nextInt();
+               scanner.nextLine();
 
-            if (opcao == 1) {
-                gerenciadorEmprestimo.listarEmprestimos();
-                devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());
-            } else if (opcao == 2) {
-                System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
-                devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarData());
-            } else {
-                throw new IllegalArgumentException("Opção inválida. Tente novamente!");
-            }
+               if (opcao == 1) {
+                   gerenciadorEmprestimo.listarEmprestimos();
+                   devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());
+               } else if (opcao == 2) {
+                   System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+                   devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarData());
+               } else if(opcao == 3) break;
+               else {
+                   throw new IllegalArgumentException("Opção inválida. Tente novamente!");
+               }
+           }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             atualizarDevolucao();

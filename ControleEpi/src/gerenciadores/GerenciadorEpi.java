@@ -48,18 +48,23 @@ public class GerenciadorEpi {
     public void atualizarEpi(){
        try{
            Epi epi = buscarEpi();
-           System.out.println("1. Atualizar nome \n2. Atualizar quantidade");
-           int opcao = scanner.nextInt();
-           scanner.nextLine();
 
-           if(opcao == 1){
-               System.out.println("Novo nome: ");
-               epi.setNome(scanner.nextLine());
-           }else if(opcao == 2){
-               System.out.println("Nova quantidade: ");
-               epi.setQuantidade(scanner.nextInt());
-           }else{
-               throw new IllegalArgumentException("Opção inválida. Tente novamente");
+           while(true){
+               System.out.println("1. Atualizar nome \n2. Atualizar quantidade\n3. Voltar");
+               int opcao = scanner.nextInt();
+               scanner.nextLine();
+
+               if(opcao == 1){
+                   System.out.println("Novo nome: ");
+                   epi.setNome(scanner.nextLine());
+               }else if(opcao == 2){
+                   System.out.println("Nova quantidade: ");
+                   epi.setQuantidade(scanner.nextInt());
+               }
+               else if(opcao == 3) break;
+               else{
+                   throw new IllegalArgumentException("Opção inválida. Tente novamente");
+               }
            }
        }catch (Exception e){
            System.out.println(e.getMessage());
