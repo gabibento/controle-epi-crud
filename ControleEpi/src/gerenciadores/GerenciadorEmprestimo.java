@@ -6,7 +6,6 @@ import entidades.Usuario;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +35,7 @@ public class GerenciadorEmprestimo {
 
             Epi epi = gerenciadorEpi.buscarEpi();
 
-            emprestimos.add(new Emprestimo(epi, usuario, buscarDataDevolucao()));
+            emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
             System.out.println("Empréstimo criado com sucesso!");
         }catch (Exception e){
             System.out.println(e.getMessage());
