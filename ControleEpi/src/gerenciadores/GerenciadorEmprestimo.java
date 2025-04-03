@@ -32,6 +32,7 @@ public class GerenciadorEmprestimo {
             System.out.println("EPIs");
             Epi epi = gerenciadorEpi.buscarEpi();
 
+            System.out.println("Digite a data de devolução prevista (DD/MM/AAAA): ");
             emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
             System.out.println("Empréstimo criado com sucesso!");
         }catch (Exception e){
@@ -40,7 +41,11 @@ public class GerenciadorEmprestimo {
     }
 
     public void listarEmprestimos() {
-        emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " + emprestimo.getUsuario() + " - " + emprestimo.getEpi() + " - " + emprestimo.getDataEmprestimo() + " - " + emprestimo.getDataDevolucao()));
+        emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " +
+                emprestimo.getUsuario() + " - " +
+                emprestimo.getEpi() + " - " +
+                emprestimo.getDataEmprestimo() + " - " +
+                emprestimo.getDataDevolucao()));
     }
 
     public Emprestimo buscarEmprestimo() {
@@ -60,14 +65,20 @@ public class GerenciadorEmprestimo {
     }
 
     public LocalDate buscarData(){
-        try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String input = scanner.nextLine();
-            return LocalDate.parse(input, formatter);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      while(true){
+          try{
+              String input = scanner.nextLine().trim();
+
+              if (input.isEmpty()) {
+                  System.out.println("Entrada vazia. Tente novamente.");
+              }
+
+              return LocalDate.parse(input, formatter);
+          }catch (Exception e){
+              System.out.println("Formato inválido. Use o formato DD/MM/AAAA.");
+          }
+      }
     }
 
     public void atualizarEmprestimo(){
@@ -92,7 +103,7 @@ public class GerenciadorEmprestimo {
                         emprestimo.setDataEmprestimo(buscarData());
                     }
                     case 4 -> {
-                        System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+                        System.out.println("Digite a data de devolução prevista (DD/MM/AAAA): ");
                         emprestimo.setDataDevolucao(buscarData());
                     }
                 }
