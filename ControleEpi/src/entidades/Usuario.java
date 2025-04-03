@@ -1,23 +1,12 @@
 package entidades;
 
 public class Usuario {
-    private int id;
-    private static int incrementador;
     private String nome;
     private String email;
 
     public Usuario(String nome, String email) {
-        this.id = incrementador++;
         this.nome = nome;
         this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -38,9 +27,8 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario:" +
-                "id: " + id +
-                ", nome: '" + nome + '\'' +
-                ", email: '" + email;
+        return "Usuario: " +
+                "nome: " + nome +
+                ", email: " + email;
     }
 }

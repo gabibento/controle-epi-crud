@@ -28,7 +28,7 @@ public class GerenciadorUsuario {
     }
 
     public void listarUsuarios() {
-        usuarios.forEach(usuario -> System.out.println((usuarios.indexOf(usuario) + 1) + ": " + usuario.getNome() + " - " + usuario.getEmail()));
+        usuarios.forEach(usuario -> System.out.println((usuarios.indexOf(usuario) + 1) + ": " + usuario.toString()));
     }
 
     public Usuario buscarUsuario() {

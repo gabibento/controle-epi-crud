@@ -28,7 +28,7 @@ public class GerenciadorEpi {
         System.out.println("Epi adicionada com sucesso!");
     }
     public void listarEpis(){
-        epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.getNome() + " - " + epi.getQuantidade()));
+        epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.toString()));
     }
     public Epi buscarEpi(){
       while(true){

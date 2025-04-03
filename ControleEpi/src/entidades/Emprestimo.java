@@ -50,11 +50,11 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return "Emprestimo:\n" +
-                "    epi: " + epi.getNome() + ",\n" +
-                "    usuario: " + usuario.getNome() + ",\n" +
-                "    dataEmprestimo: " + dataEmprestimo + ",\n" +
-                "    dataDevolucao: " + dataDevolucao;
+        return "Emprestimo: " +
+                "EPI: " + epi.getNome() +
+                ", Usuário: " + usuario.getNome() +
+                ", Data de empréstimo: " + dataEmprestimo +
+                "Data de devolução: " + dataDevolucao;
     }
 
 }

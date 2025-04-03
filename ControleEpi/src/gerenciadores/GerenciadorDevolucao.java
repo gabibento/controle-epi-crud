@@ -33,7 +33,7 @@ public class GerenciadorDevolucao {
         }
     }
     public void listarDevolucoes() {
-        devolucoes.forEach(devolucao -> System.out.println((devolucoes.indexOf(devolucao) + 1) + ": " + devolucao.getEmprestimo().toString() + " - "  + devolucao.getDataDevolucao()));
+        devolucoes.forEach(devolucao -> System.out.println((devolucoes.indexOf(devolucao) + 1) + ": " + devolucao.toString()));
     }
     public Devolucao buscarDevolucao(){
         try {

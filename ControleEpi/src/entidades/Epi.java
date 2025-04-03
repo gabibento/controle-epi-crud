@@ -1,25 +1,13 @@
 package entidades;
 
 public class Epi {
-    private int id;
-    private static int incrementador;
     private String nome;
     private int quantidade;
 
     public Epi(String nome, int quantidade) {
-        this.id = incrementador++;
         this.nome = nome;
         this.quantidade = quantidade;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -38,9 +26,8 @@ public class Epi {
 
     @Override
     public String toString() {
-        return "Epi:" +
-                "id: " + id +
-                ", nome: '" + nome + '\'' +
+        return "EPI: " +
+                "nome: " + nome +
                 ", quantidade: " + quantidade;
     }
 }

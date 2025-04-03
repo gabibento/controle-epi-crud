@@ -41,11 +41,7 @@ public class GerenciadorEmprestimo {
     }
 
     public void listarEmprestimos() {
-        emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " +
-                emprestimo.getUsuario() + " - " +
-                emprestimo.getEpi() + " - " +
-                emprestimo.getDataEmprestimo() + " - " +
-                emprestimo.getDataDevolucao()));
+        emprestimos.forEach(emprestimo -> System.out.println((emprestimos.indexOf(emprestimo) + 1) + ": " + emprestimo.toString()));
     }
 
     public Emprestimo buscarEmprestimo() {
