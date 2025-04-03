@@ -43,6 +43,7 @@ public class GerenciadorUsuario {
             Usuario usuario = usuarios.get(scanner.nextInt() - 1);
             scanner.nextLine();
             if (usuario == null) throw new IllegalArgumentException("Erro ao encontrar usuário. Tente novamente!");
+            return usuario;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             buscarUsuario();
