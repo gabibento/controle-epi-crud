@@ -69,4 +69,42 @@ public class GerenciadorEmprestimo {
         }
         return null;
     }
+
+    public LocalDate buscarDataDevolucao(){
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            System.out.println("Digite a data de devolução (DD/MM/AAAA): ");
+            String input = scanner.nextLine();
+            return LocalDate.parse(input, formatter);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void atualizarEmprestimo(){
+        try{
+            Emprestimo emprestimo = buscarEmprestimo();
+            System.out.printf("1. Atualizar nome" +"\n2. Atualizar EPI" + "\n3. Atualizar data de devolução");
+            int opcao = scanner.nextInt();
+
+            switch (opcao){
+                case 1: emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
+                case 2: emprestimo.setEpi(gerenciadorEpi.buscarEpi());
+                case 3: emprestimo.setDataDevolucao(buscarDataDevolucao());
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removerEmprestimo(){
+        try {
+            Emprestimo emprestimo = buscarEmprestimo();
+            emprestimos.remove(emprestimo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
