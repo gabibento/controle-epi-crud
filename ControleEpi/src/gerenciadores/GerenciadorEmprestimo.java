@@ -25,14 +25,14 @@ public class GerenciadorEmprestimo {
 
     public void criarEmprestimo() {
         try{
-            System.out.println("Colaboradores");
+            System.out.println("Colaboradores: ");
 
             Usuario usuario = gerenciadorUsuario.buscarUsuario();
 
             System.out.println("EPIs");
             Epi epi = gerenciadorEpi.buscarEpi();
 
-            System.out.println("Digite a data de devolução prevista (DD/MM/AAAA): ");
+            System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
             emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
             System.out.println("Empréstimo criado com sucesso!");
         }catch (Exception e){
@@ -49,19 +49,19 @@ public class GerenciadorEmprestimo {
     }
 
     public Emprestimo buscarEmprestimo() {
-        try {
-            listarEmprestimos();
-            System.out.println("Digite o índice do empréstimo: ");
+       while (true){
+           try {
+               listarEmprestimos();
+               System.out.print("Digite o índice do empréstimo: ");
 
-            Emprestimo emprestimo = emprestimos.get(scanner.nextInt() - 1);
-            scanner.nextLine();
-            if (emprestimo == null)
-                throw new IllegalArgumentException("Erro ao encontrar empréstimo. Tente novamente!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            buscarEmprestimo();
-        }
-        return null;
+               Emprestimo emprestimo = emprestimos.get(scanner.nextInt() - 1);
+               scanner.nextLine();
+               if (emprestimo == null) throw new IllegalArgumentException("Erro ao encontrar empréstimo. Tente novamente!");
+               return emprestimo;
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+       }
     }
 
     public LocalDate buscarData(){
@@ -90,7 +90,7 @@ public class GerenciadorEmprestimo {
                         "2. Atualizar EPI\n" +
                         "3. Atualizar data de empréstimo\n" +
                         "4. Atualizar data de devolução\n" +
-                        "5. Voltar");
+                        "5. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
 
                 if(opcao == 5) break;
@@ -99,14 +99,15 @@ public class GerenciadorEmprestimo {
                     case 1 -> emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
                     case 2 -> emprestimo.setEpi(gerenciadorEpi.buscarEpi());
                     case 3 -> {
-                        System.out.println("Digite a data de empréstimo (DD/MM/AAAA): ");
+                        System.out.print("Digite a data de empréstimo (DD/MM/AAAA): ");
                         emprestimo.setDataEmprestimo(buscarData());
                     }
                     case 4 -> {
-                        System.out.println("Digite a data de devolução prevista (DD/MM/AAAA): ");
+                        System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
                         emprestimo.setDataDevolucao(buscarData());
                     }
                 }
+                System.out.println("Empréstimo atualizado com sucesso!");
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
