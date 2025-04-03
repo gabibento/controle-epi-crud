@@ -26,4 +26,11 @@ public class Devolucao {
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
+
+    @Override
+    public String toString() {
+        return "Devolucao:" +
+                "emprestimo: " + emprestimo +
+                ", dataDevolucao: " + dataDevolucao;
+    }
 }

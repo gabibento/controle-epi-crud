@@ -35,4 +35,12 @@ public class Epi {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
+    @Override
+    public String toString() {
+        return "Epi:" +
+                "id: " + id +
+                ", nome: '" + nome + '\'' +
+                ", quantidade: " + quantidade;
+    }
 }
