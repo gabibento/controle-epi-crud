@@ -40,7 +40,7 @@ public class GerenciadorUsuario {
             listarUsuarios();
             System.out.println("Digite o índice do usuário: ");
 
-            Usuario usuario = usuarios.get(scanner.nextInt());
+            Usuario usuario = usuarios.get(scanner.nextInt() - 1);
             scanner.nextLine();
             if (usuario == null) throw new IllegalArgumentException("Erro ao encontrar usuário. Tente novamente!");
         } catch (Exception e) {
