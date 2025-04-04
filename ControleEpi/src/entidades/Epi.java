@@ -26,8 +26,7 @@ public class Epi {
 
     @Override
     public String toString() {
-        return "EPI: " +
-                "nome: " + nome +
+        return "Nome: " + nome +
                 ", quantidade: " + quantidade;
     }
 }

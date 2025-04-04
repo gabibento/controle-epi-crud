@@ -1,6 +1,7 @@
 package entidades;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Emprestimo {
 
@@ -50,11 +51,10 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return "Emprestimo: " +
-                "EPI: " + epi.getNome() +
-                ", Usuário: " + usuario.getNome() +
-                ", Data de empréstimo: " + dataEmprestimo +
-                "Data de devolução: " + dataDevolucao;
+        return "EPI: " + epi.getNome() +
+                ", usuário: " + usuario.getNome() +
+                ", data de empréstimo: " + dataEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", data de devolução prevista: " + dataDevolucao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
 }
