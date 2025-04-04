@@ -7,6 +7,7 @@ import entidades.Usuario;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -54,11 +55,19 @@ public class GerenciadorEmprestimo {
                if(emprestimos.isEmpty()) return null;
 
                System.out.print("Digite o índice do empréstimo: ");
+               int indice = scanner.nextInt();
 
-               Emprestimo emprestimo = emprestimos.get(scanner.nextInt() - 1);
+               Emprestimo emprestimo = emprestimos.get(indice - 1);
                scanner.nextLine();
+
                if (emprestimo == null) throw new IllegalArgumentException("Erro ao encontrar empréstimo. Tente novamente!");
                return emprestimo;
+           } catch (IndexOutOfBoundsException e) {
+               System.out.println("Índice inválido. Tente novamente.");
+               scanner.nextLine();
+           } catch (InputMismatchException e) {
+               System.out.println("Entrada inválida. Digite um número válido.");
+               scanner.nextLine();
            } catch (Exception e) {
                System.out.println(e.getMessage());
            }
@@ -77,27 +86,27 @@ public class GerenciadorEmprestimo {
               }
               return LocalDate.parse(input, formatter);
           }catch (Exception e){
-              System.out.println("Formato inválido. Use o formato DD/MM/AAAA. Digite novamente: ");
+              System.out.print("Formato inválido. Use o formato DD/MM/AAAA. Digite novamente: ");
           }
       }
     }
 
     public void atualizarEmprestimo(){
-        try{
-            Emprestimo emprestimo = buscarEmprestimo();
-
-            while(true){
-                if(emprestimo == null) break;
+        Emprestimo emprestimo = buscarEmprestimo();
+        while(true) {
+            try {
+                if (emprestimo == null) break;
                 System.out.print("1. Atualizar usuário\n" +
                         "2. Atualizar EPI\n" +
                         "3. Atualizar data de empréstimo\n" +
                         "4. Atualizar data de devolução\n" +
                         "5. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
+                scanner.nextLine();
 
-                if(opcao == 5) break;
+                if (opcao == 5) break;
 
-                switch (opcao){
+                switch (opcao) {
                     case 1 -> emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
                     case 2 -> emprestimo.setEpi(gerenciadorEpi.buscarEpi());
                     case 3 -> {
@@ -108,11 +117,15 @@ public class GerenciadorEmprestimo {
                         System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
                         emprestimo.setDataDevolucao(buscarData());
                     }
+                    default -> throw new IllegalArgumentException("Opção inválida. Tente novamente!");
                 }
                 System.out.println("Empréstimo atualizado com sucesso!");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número válido.");
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
         }
     }
 

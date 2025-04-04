@@ -3,6 +3,7 @@ package gerenciadores;
 import entidades.Usuario;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,48 +34,59 @@ public class GerenciadorUsuario {
     }
 
     public Usuario buscarUsuario() {
-     while (true){
+        while (true){
          try {
              listarUsuarios();
              if(usuarios.isEmpty()) return null;
 
              System.out.print("Digite o índice do usuário: ");
+             int indice = scanner.nextInt();
 
-             Usuario usuario = usuarios.get(scanner.nextInt() - 1);
+             Usuario usuario = usuarios.get(indice - 1);
              scanner.nextLine();
+
              if (usuario == null) throw new IllegalArgumentException("Erro ao encontrar usuário. Tente novamente!");
              return usuario;
+         } catch (IndexOutOfBoundsException e) {
+             System.out.println("Índice inválido. Tente novamente.");
+             scanner.nextLine();
+         } catch (InputMismatchException e) {
+             System.out.println("Entrada inválida. Digite um número válido.");
+             scanner.nextLine();
          } catch (Exception e) {
              System.out.println(e.getMessage());
-             buscarUsuario();
          }
-     }
+        }
     }
 
     public void atualizarUsuario() {
-        try {
-            Usuario usuario = buscarUsuario();
+        Usuario usuario = buscarUsuario();
 
-            while(true){
-                if(usuario == null) break;
+        while(true) {
+            try {
+                if (usuario == null) break;
+
                 System.out.print("1. Atualizar nome\n2. Atualizar e-mail\n3. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
                 scanner.nextLine();
+
                 if (opcao == 1) {
                     System.out.print("Novo nome: ");
                     usuario.setNome(scanner.nextLine());
                 } else if (opcao == 2) {
                     System.out.print("Novo e-mail: ");
                     usuario.setEmail(scanner.nextLine());
-                } else if(opcao == 3) break;
+                } else if (opcao == 3) break;
                 else {
                     throw new IllegalArgumentException("Opção inválida. Tente novamente!");
                 }
                 System.out.println("Usuário atualizado com sucesso!\n");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número válido.");
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            atualizarUsuario();
         }
     }
     public void removerUsuario() {
