@@ -39,6 +39,8 @@ public class GerenciadorDevolucao {
     public Devolucao buscarDevolucao(){
         try {
             listarDevolucoes();
+            if(devolucoes.isEmpty()) return null;
+
             System.out.print("Digite o índice da devolução: ");
 
             Devolucao devolucao = devolucoes.get(scanner.nextInt() - 1);
@@ -56,6 +58,7 @@ public class GerenciadorDevolucao {
             Devolucao devolucao = buscarDevolucao();
 
            while(true){
+               if(devolucao == null) break;
                System.out.print("1. Atualizar empréstimo\n2. Atualizar data de devolução\n3. Voltar\nDigite uma opção: ");
                int opcao = scanner.nextInt();
                scanner.nextLine();
@@ -78,8 +81,11 @@ public class GerenciadorDevolucao {
     }
     public void removerDevolucao(){
         try {
-            devolucoes.remove(buscarDevolucao());
-            System.out.println("Devolução removida com sucesso!");
+            Devolucao devolucao = buscarDevolucao();
+           if(devolucao != null){
+               devolucoes.remove(devolucao);
+               System.out.println("Devolução removida com sucesso!");
+           }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -36,6 +36,8 @@ public class GerenciadorUsuario {
      while (true){
          try {
              listarUsuarios();
+             if(usuarios.isEmpty()) return null;
+
              System.out.print("Digite o índice do usuário: ");
 
              Usuario usuario = usuarios.get(scanner.nextInt() - 1);
@@ -54,6 +56,7 @@ public class GerenciadorUsuario {
             Usuario usuario = buscarUsuario();
 
             while(true){
+                if(usuario == null) break;
                 System.out.print("1. Atualizar nome\n2. Atualizar e-mail\n3. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
                 scanner.nextLine();
@@ -77,8 +80,10 @@ public class GerenciadorUsuario {
     public void removerUsuario() {
         try {
             Usuario usuario = buscarUsuario();
-            usuarios.remove(usuario);
-            System.out.println("Usuário removido com sucesso!");
+           if(usuario != null){
+               usuarios.remove(usuario);
+               System.out.println("Usuário removido com sucesso!");
+           }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

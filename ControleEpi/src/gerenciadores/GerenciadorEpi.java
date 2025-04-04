@@ -16,16 +16,20 @@ public class GerenciadorEpi {
     }
 
     public void cadastrarEpi(){
-        System.out.print("Nome: ");
-        String nome = scanner.next();
+       try {
+           System.out.print("Nome: ");
+           String nome = scanner.next();
 
-        System.out.print("Quantidade: ");
-        int quantidade = scanner.nextInt();
+           System.out.print("Quantidade: ");
+           int quantidade = scanner.nextInt();
 
-        Epi epi = new Epi(nome, quantidade);
-        epis.add(epi);
+           Epi epi = new Epi(nome, quantidade);
+           epis.add(epi);
 
-        System.out.println("Epi adicionada com sucesso!");
+           System.out.println("Epi adicionada com sucesso!");
+       }catch (Exception e){
+           System.out.println("Erro ao cadastrar EPI");
+       }
     }
     public void listarEpis(){
         if(epis.isEmpty()) System.out.println("Não há EPIs cadastradas");
@@ -35,6 +39,7 @@ public class GerenciadorEpi {
       while(true){
           try{
               listarEpis();
+              if(epis.isEmpty()) return null;
               System.out.print("Digite o índice do EPI: ");
 
               Epi epi = epis.get(scanner.nextInt() - 1);
@@ -51,6 +56,8 @@ public class GerenciadorEpi {
            Epi epi = buscarEpi();
 
            while(true){
+               if(epi == null) break;
+
                System.out.print("1. Atualizar nome \n2. Atualizar quantidade\n3. Voltar\nDigite uma opção: ");
                int opcao = scanner.nextInt();
                scanner.nextLine();
@@ -75,8 +82,10 @@ public class GerenciadorEpi {
     public void removerEpi(){
         try{
             Epi epi = buscarEpi();
-            epis.remove(epi);
-            System.out.println("EPI removida com sucesso!");
+            if(epi != null) {
+                epis.remove(epi);
+                System.out.println("EPI removida com sucesso!");
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

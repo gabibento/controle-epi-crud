@@ -7,53 +7,66 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-     static final Scanner scanner = new Scanner(System.in);
-     static final GerenciadorEpi gerenciadorEpi = new GerenciadorEpi();
-     static final GerenciadorUsuario gerenciadorUsuario = new GerenciadorUsuario();
-     static final GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo(gerenciadorUsuario, gerenciadorEpi);
-     static final GerenciadorDevolucao gerenciadorDevolucao = new GerenciadorDevolucao(gerenciadorEmprestimo);
-
+    static final Scanner scanner = new Scanner(System.in);
+    static final GerenciadorEpi gerenciadorEpi = new GerenciadorEpi();
+    static final GerenciadorUsuario gerenciadorUsuario = new GerenciadorUsuario();
+    static final GerenciadorEmprestimo gerenciadorEmprestimo = new GerenciadorEmprestimo(gerenciadorUsuario, gerenciadorEpi);
+    static final GerenciadorDevolucao gerenciadorDevolucao = new GerenciadorDevolucao(gerenciadorEmprestimo);
 
     public static void main(String[] args) {
-        try {
-            processarMenu();
-        } catch (InputMismatchException e) {
-            System.out.println("Entrada inválida! Tente novamente");
-            processarMenu();
-        } finally {
-            scanner.close();
-        }
+        processarMenu();
+        scanner.close();
     }
-    private static void processarMenu(){
-        do {
+
+    private static void processarMenu() {
+        while (true) {
             int opcao = escolherMenuPrincipal();
             if (opcao == 0) break;
 
             processarOpcaoPrincipal(opcao);
-        } while (true);
+        }
     }
+
     private static int escolherMenuPrincipal() {
-        System.out.println("\n1. CRUD de Usuários\n" +
-                "2. CRUD de EPIs\n" +
-                "3. CRUD de Empréstimos\n" +
-                "4. CRUD de Devoluções\n" +
-                "0. Sair");
-        System.out.print("Escolha uma opção: ");
-        return scanner.nextInt();
+        while (true) {
+            try {
+                System.out.println("\n1. CRUD de Usuários\n" +
+                        "2. CRUD de EPIs\n" +
+                        "3. CRUD de Empréstimos\n" +
+                        "4. CRUD de Devoluções\n" +
+                        "0. Sair");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();  // Limpar o buffer
+                return opcao;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Digite um número inteiro.");
+                scanner.nextLine();  // Limpar o buffer
+            }
+        }
     }
 
     private static int escolherCRUD() {
-        System.out.println("\n1. Cadastrar\n" +
-                "2. Listar\n" +
-                "3. Atualizar\n" +
-                "4. Remover\n" +
-                "5. Voltar");
-        System.out.print("Escolha uma opção: ");
-        return scanner.nextInt();
+        while (true) {
+            try {
+                System.out.println("\n1. Cadastrar\n" +
+                        "2. Listar\n" +
+                        "3. Atualizar\n" +
+                        "4. Remover\n" +
+                        "5. Voltar");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();  // Limpar o buffer
+                return opcao;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Digite um número inteiro.");
+                scanner.nextLine();  // Limpar o buffer
+            }
+        }
     }
 
     private static void processarOpcaoPrincipal(int opcao) {
-        do {
+        while (true) {
             int opcaoCRUD = escolherCRUD();
             if (opcaoCRUD == 5) break;
 
@@ -64,8 +77,9 @@ public class Main {
                 case 4 -> processarCRUDDevolucao(opcaoCRUD);
                 default -> System.out.println("Opção inválida.");
             }
-        } while (true);
+        }
     }
+
     private static void processarCRUDUsuario(int opcao) {
         switch (opcao) {
             case 1 -> gerenciadorUsuario.cadastrarUsuario();

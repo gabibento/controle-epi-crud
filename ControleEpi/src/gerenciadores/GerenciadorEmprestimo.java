@@ -49,6 +49,8 @@ public class GerenciadorEmprestimo {
        while (true){
            try {
                listarEmprestimos();
+               if(emprestimos.isEmpty()) return null;
+
                System.out.print("Digite o índice do empréstimo: ");
 
                Emprestimo emprestimo = emprestimos.get(scanner.nextInt() - 1);
@@ -83,6 +85,7 @@ public class GerenciadorEmprestimo {
             Emprestimo emprestimo = buscarEmprestimo();
 
             while(true){
+                if(emprestimo == null) break;
                 System.out.print("1. Atualizar usuário\n" +
                         "2. Atualizar EPI\n" +
                         "3. Atualizar data de empréstimo\n" +
@@ -113,8 +116,11 @@ public class GerenciadorEmprestimo {
 
     public void removerEmprestimo(){
         try {
-            emprestimos.remove(buscarEmprestimo());
-            System.out.println("Empréstimo removido com sucesso!");
+            Emprestimo emprestimo = buscarEmprestimo();
+           if(emprestimo != null){
+               emprestimos.remove(emprestimo);
+               System.out.println("Empréstimo removido com sucesso!");
+           }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
