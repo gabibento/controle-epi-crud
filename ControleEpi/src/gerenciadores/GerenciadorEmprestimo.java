@@ -32,9 +32,11 @@ public class GerenciadorEmprestimo {
             System.out.println("EPIs");
             Epi epi = gerenciadorEpi.buscarEpi();
 
-            System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
-            emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
-            System.out.println("Empréstimo criado com sucesso!");
+            if(usuario != null && epi != null){
+                System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
+                emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
+                System.out.println("Empréstimo criado com sucesso!");
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -71,11 +73,11 @@ public class GerenciadorEmprestimo {
 
               if (input.isEmpty()) {
                   System.out.println("Entrada vazia. Tente novamente.");
+                  continue;
               }
-
               return LocalDate.parse(input, formatter);
           }catch (Exception e){
-              System.out.println("Formato inválido. Use o formato DD/MM/AAAA.");
+              System.out.println("Formato inválido. Use o formato DD/MM/AAAA. Digite novamente: ");
           }
       }
     }
