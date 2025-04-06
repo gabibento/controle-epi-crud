@@ -38,6 +38,7 @@ public class GerenciadorEmprestimo {
 
                 System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
                 emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
+                epi.setQuantidade(epi.getQuantidade() - 1);
                 System.out.println("Empréstimo criado com sucesso!");
             }
         }catch (Exception e){
@@ -114,8 +115,14 @@ public class GerenciadorEmprestimo {
                 switch (opcao) {
                     case 1 -> emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
                     case 2 -> {
+                        Epi epiAtual = emprestimo.getEpi();
                         Epi novaEpi = gerenciadorEpi.buscarEpi();
+
                         if(!validarEmprestimo(novaEpi)) throw new RuntimeException("Não há " + novaEpi.getNome() + " suficientes");
+
+                        novaEpi.setQuantidade(novaEpi.getQuantidade() - 1);
+                        epiAtual.setQuantidade(epiAtual.getQuantidade() + 1);
+
                         emprestimo.setEpi(novaEpi);
                     }
                     case 3 -> {
@@ -143,6 +150,7 @@ public class GerenciadorEmprestimo {
             Emprestimo emprestimo = buscarEmprestimo();
            if(emprestimo != null){
                emprestimos.remove(emprestimo);
+               emprestimo.getEpi().setQuantidade(emprestimo.getEpi().getQuantidade() + 1);
 
                System.out.println("Empréstimo removido com sucesso!");
            }
