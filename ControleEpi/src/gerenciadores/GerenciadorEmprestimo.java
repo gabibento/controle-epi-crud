@@ -34,6 +34,8 @@ public class GerenciadorEmprestimo {
             Epi epi = gerenciadorEpi.buscarEpi();
 
             if(usuario != null && epi != null){
+                if(!validarEmprestimo(epi)) throw new RuntimeException("Não há " + epi.getNome() + " suficientes");
+
                 System.out.print("Digite a data de devolução prevista (DD/MM/AAAA): ");
                 emprestimos.add(new Emprestimo(epi, usuario, buscarData()));
                 System.out.println("Empréstimo criado com sucesso!");
@@ -41,6 +43,9 @@ public class GerenciadorEmprestimo {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+    public boolean validarEmprestimo(Epi epi){
+        return epi.getQuantidade() > 0;
     }
 
     public void listarEmprestimos() {
@@ -108,7 +113,11 @@ public class GerenciadorEmprestimo {
 
                 switch (opcao) {
                     case 1 -> emprestimo.setUsuario(gerenciadorUsuario.buscarUsuario());
-                    case 2 -> emprestimo.setEpi(gerenciadorEpi.buscarEpi());
+                    case 2 -> {
+                        Epi novaEpi = gerenciadorEpi.buscarEpi();
+                        if(!validarEmprestimo(novaEpi)) throw new RuntimeException("Não há " + novaEpi.getNome() + " suficientes");
+                        emprestimo.setEpi(novaEpi);
+                    }
                     case 3 -> {
                         System.out.print("Digite a data de empréstimo (DD/MM/AAAA): ");
                         emprestimo.setDataEmprestimo(buscarData());
@@ -134,6 +143,7 @@ public class GerenciadorEmprestimo {
             Emprestimo emprestimo = buscarEmprestimo();
            if(emprestimo != null){
                emprestimos.remove(emprestimo);
+
                System.out.println("Empréstimo removido com sucesso!");
            }
         } catch (Exception e) {
