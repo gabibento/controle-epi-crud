@@ -1,12 +1,17 @@
 package entidades;
 
 public class Epi {
+    private int id;
     private String nome;
     private int quantidade;
 
-    public Epi(String nome, int quantidade) {
+    public Epi(int id, String nome, int quantidade) {
+        this.id = id;
         this.nome = nome;
         this.quantidade = quantidade;
+    }
+    public Epi(){
+
     }
     public String getNome() {
         return nome;
@@ -22,6 +27,14 @@ public class Epi {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

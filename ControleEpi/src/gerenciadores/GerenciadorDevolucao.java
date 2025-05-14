@@ -2,6 +2,8 @@ package gerenciadores;
 
 import entidades.Devolucao;
 import entidades.Emprestimo;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -15,40 +17,76 @@ public class GerenciadorDevolucao {
     GerenciadorEmprestimo gerenciadorEmprestimo;
 
     public GerenciadorDevolucao(GerenciadorEmprestimo gerenciadorEmprestimo) {
-       devolucoes = new ArrayList<>();
-       this.gerenciadorEmprestimo = gerenciadorEmprestimo;
+        devolucoes = new ArrayList<>();
+        this.gerenciadorEmprestimo = gerenciadorEmprestimo;
     }
 
-    public void criarDevolucao(){
+    public void criarDevolucao() {
         System.out.println("Empréstimo: ");
         Emprestimo emprestimo = gerenciadorEmprestimo.buscarEmprestimo();
 
-        try{
+        try {
             System.out.print("Digite a data de devolução (DD/MM/AAAA): ");
             LocalDate data = gerenciadorEmprestimo.buscarData();
 
-            devolucoes.add(new Devolucao(emprestimo, data));
-            System.out.println("Devolução criada com sucesso!");
-        }catch (Exception e){
+            String sql = "INSERT INTO devolucoes (id_emprestimo, data_devolucao) VALUES (?, ?)";
+            try (Connection conn = Conexao.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setInt(1, emprestimo.getId());
+                stmt.setDate(2, Date.valueOf(data));
+                stmt.executeUpdate();
+
+                System.out.println("Devolução criada com sucesso!");
+            }
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    public void listarDevolucoes() {
-        if(devolucoes.isEmpty()) System.out.println("Não há devoluções cadastradas");
-        else devolucoes.forEach(devolucao -> System.out.println((devolucoes.indexOf(devolucao) + 1) + ": " + devolucao.toString()));
+
+    public List<Devolucao> listarDevolucoes() {
+        List<Devolucao> devolucoes = new ArrayList<>();
+        String sql = "SELECT * FROM devolucoes";
+
+        try (Connection conn = Conexao.conectar();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id_devolucao");
+                int idEmprestimo = rs.getInt("id_emprestimo");
+                LocalDate dataDevolucao = rs.getDate("data_devolucao").toLocalDate();
+
+                Emprestimo emprestimo = gerenciadorEmprestimo.buscarEmprestimoPorId(idEmprestimo);
+                Devolucao devolucao = new Devolucao(id, emprestimo, dataDevolucao);
+                devolucoes.add(devolucao);
+            }
+
+            if (devolucoes.isEmpty()) {
+                System.out.println("Não há devoluções cadastradas");
+            } else {
+                devolucoes.forEach(devolucao -> System.out.println((devolucao.getId() + ": " + devolucao)));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar devoluções: " + e.getMessage());
+        }
+
+        return devolucoes;
     }
-    public Devolucao buscarDevolucao(){
-        while(true){
+
+    public Devolucao buscarDevolucao() {
+        while (true) {
             try {
-                listarDevolucoes();
-                if(devolucoes.isEmpty()) return null;
+                List<Devolucao> devolucoes = listarDevolucoes();
+                if (devolucoes.isEmpty()) return null;
 
                 System.out.print("Digite o índice da devolução: ");
                 int indice = scanner.nextInt();
-
-                Devolucao devolucao = devolucoes.get(indice - 1);
                 scanner.nextLine();
 
+                Devolucao devolucao = devolucoes.get(indice - 1);
                 if (devolucao == null) throw new IllegalArgumentException("Erro ao encontrar a devolução. Tente novamente!");
                 return devolucao;
             } catch (IndexOutOfBoundsException e) {
@@ -62,9 +100,10 @@ public class GerenciadorDevolucao {
             }
         }
     }
-    public void atualizarDevolucao(){
+
+    public void atualizarDevolucao() {
         Devolucao devolucao = buscarDevolucao();
-        while(true) {
+        while (true) {
             try {
                 if (devolucao == null) break;
 
@@ -72,16 +111,39 @@ public class GerenciadorDevolucao {
                 int opcao = scanner.nextInt();
                 scanner.nextLine();
 
+                String sql = "";
                 if (opcao == 1) {
-                    devolucao.setEmprestimo(gerenciadorEmprestimo.buscarEmprestimo());
+                    Emprestimo emprestimo = gerenciadorEmprestimo.buscarEmprestimo();
+                    devolucao.setEmprestimo(emprestimo);
+
+                    sql = "UPDATE devolucoes SET id_emprestimo = ? WHERE id_devolucao = ?";
+                    try (Connection conn = Conexao.conectar();
+                         PreparedStatement stmt = conn.prepareStatement(sql)) {
+                        stmt.setInt(1, emprestimo.getId());
+                        stmt.setInt(2, devolucao.getId());
+                        stmt.executeUpdate();
+                        System.out.println("Empréstimo atualizado com sucesso!");
+                    }
+
                 } else if (opcao == 2) {
-                    System.out.print("Digite a data de devolução (DD/MM/AAAA): ");
-                    devolucao.setDataDevolucao(gerenciadorEmprestimo.buscarData());
+                    System.out.print("Digite a nova data de devolução (DD/MM/AAAA): ");
+                    LocalDate novaData = LocalDate.parse(scanner.nextLine());
+                    devolucao.setDataDevolucao(novaData);
+
+                    sql = "UPDATE devolucoes SET data_devolucao = ? WHERE id_devolucao = ?";
+                    try (Connection conn = Conexao.conectar();
+                         PreparedStatement stmt = conn.prepareStatement(sql)) {
+                        stmt.setDate(1, Date.valueOf(novaData));
+                        stmt.setInt(2, devolucao.getId());
+                        stmt.executeUpdate();
+                        System.out.println("Data de devolução atualizada com sucesso!");
+                    }
+
                 } else if (opcao == 3) break;
                 else {
                     throw new IllegalArgumentException("Opção inválida. Tente novamente!");
                 }
-                System.out.println("Devolução atualizada com sucesso!\n");
+
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número válido.");
                 scanner.nextLine();
@@ -90,13 +152,20 @@ public class GerenciadorDevolucao {
             }
         }
     }
-    public void removerDevolucao(){
+
+    public void removerDevolucao() {
         try {
             Devolucao devolucao = buscarDevolucao();
-           if(devolucao != null){
-               devolucoes.remove(devolucao);
-               System.out.println("Devolução removida com sucesso!");
-           }
+            if (devolucao != null) {
+                String sql = "DELETE FROM devolucoes WHERE id_devolucao = ?";
+                try (Connection conn = Conexao.conectar();
+                     PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                    stmt.setInt(1, devolucao.getId());
+                    stmt.executeUpdate();
+                    System.out.println("Devolução removida com sucesso!");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

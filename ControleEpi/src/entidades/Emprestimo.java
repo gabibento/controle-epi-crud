@@ -4,17 +4,26 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Emprestimo {
-
+    private int id;
     private Epi epi;
     private Usuario usuario;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
 
-    public Emprestimo(Epi epi, Usuario usuario, LocalDate dataDevolucao) {
+    public Emprestimo(int id, Epi epi, Usuario usuario, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
+        this.id = id;
         this.epi = epi;
         this.usuario = usuario;
-        this.dataEmprestimo = LocalDate.now();
+        this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Epi getEpi() {

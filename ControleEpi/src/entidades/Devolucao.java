@@ -4,12 +4,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Devolucao {
+    private int id;
     private Emprestimo emprestimo;
     private LocalDate dataDevolucao;
 
-    public Devolucao(Emprestimo emprestimo, LocalDate dataDevolucao) {
+    public Devolucao(int id, Emprestimo emprestimo, LocalDate dataDevolucao) {
+        this.id = id;
         this.emprestimo = emprestimo;
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Emprestimo getEmprestimo() {

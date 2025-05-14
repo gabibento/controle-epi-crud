@@ -1,7 +1,4 @@
-import gerenciadores.GerenciadorDevolucao;
-import gerenciadores.GerenciadorEmprestimo;
-import gerenciadores.GerenciadorEpi;
-import gerenciadores.GerenciadorUsuario;
+import gerenciadores.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

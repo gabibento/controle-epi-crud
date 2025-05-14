@@ -2,103 +2,188 @@ package gerenciadores;
 
 import entidades.Epi;
 
-import java.util.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 
 public class GerenciadorEpi {
     Scanner scanner = new Scanner(System.in);
-    private List<Epi> epis;
 
-    public GerenciadorEpi() {
-        epis = new ArrayList<>();
+    public void cadastrarEpi() {
+        try {
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+
+            System.out.print("Quantidade: ");
+            int quantidade = scanner.nextInt();
+            scanner.nextLine();
+
+            String sql = "INSERT INTO epis (nome, quantidade) VALUES (?, ?)";
+
+            try (Connection conn = Conexao.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, nome);
+                stmt.setInt(2, quantidade);
+                stmt.executeUpdate();
+
+                System.out.println("EPI cadastrada com sucesso!");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar EPI: " + e.getMessage());
+            scanner.nextLine();
+        }
     }
 
-    public void cadastrarEpi(){
-       try {
-           System.out.print("Nome: ");
-           String nome = scanner.nextLine();
+    public List<Epi> listarEpis() {
+        List<Epi> epis = new ArrayList<>();
+        String sql = "SELECT * FROM epis";
 
-           System.out.print("Quantidade: ");
-           int quantidade = scanner.nextInt();
-           scanner.nextLine();
+        try (Connection conn = Conexao.conectar();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-           Epi epi = new Epi(nome, quantidade);
-           epis.add(epi);
+            while (rs.next()) {
+                Epi epi = new Epi();
+                epi.setId(rs.getInt("id_epi"));
+                epi.setNome(rs.getString("nome"));
+                epi.setQuantidade(rs.getInt("quantidade"));
+                epis.add(epi);
+            }
 
-           System.out.println("Epi adicionada com sucesso!");
-       }catch (Exception e){
-           System.out.println("Erro ao cadastrar EPI");
-           scanner.nextLine();
-       }
+            if (epis.isEmpty()) {
+                System.out.println("Não há EPIs cadastradas.");
+            } else {
+                for (int i = 0; i < epis.size(); i++) {
+                    System.out.println(epis.get(i).getId() + ": " + epis.get(i));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar EPIs: " + e.getMessage());
+        }
+
+        return epis;
     }
-    public void listarEpis(){
-        if(epis.isEmpty()) System.out.println("Não há EPIs cadastradas");
-        else epis.forEach(epi -> System.out.println((epis.indexOf(epi) + 1) + ": " + epi.toString()));
-    }
-    public Epi buscarEpi(){
-      while(true){
-          try{
-              listarEpis();
-              if(epis.isEmpty()) return null;
 
-              System.out.print("Digite o índice do EPI: ");
-              int indice = scanner.nextInt();
-              scanner.nextLine();
+    public Epi buscarEpi() {
+        List<Epi> epis = listarEpis();
+        if (epis.isEmpty()) return null;
 
-              Epi epi = epis.get(indice - 1);
-
-              if(epi == null) throw new IllegalArgumentException("Erro ao encontrar EPI. Tente novamente!");
-              return epi;
-          } catch (IndexOutOfBoundsException e) {
-              System.out.println("Índice inválido. Tente novamente.");
-              scanner.nextLine();
-          } catch (InputMismatchException e) {
-              System.out.println("Entrada inválida. Digite um número válido.");
-              scanner.nextLine();
-          } catch (Exception e) {
-              System.out.println(e.getMessage());
-          }
-      }
-    }
-    public void atualizarEpi(){
-        Epi epi = buscarEpi();
-        while(true) {
+        while (true) {
             try {
-                if (epi == null) break;
+                System.out.print("Digite o índice do EPI: ");
+                int indice = scanner.nextInt();
+                scanner.nextLine();
 
+                return epis.get(indice - 1);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Índice inválido. Tente novamente.");
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número válido.");
+                scanner.nextLine();
+            }
+        }
+    }
+    public Epi buscarEpiPorId(int id) {
+        Epi epi = null;
+        String sql = "SELECT * FROM epis WHERE id_epi = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    epi = new Epi();
+                    epi.setId(rs.getInt("id_epi"));
+                    epi.setNome(rs.getString("nome"));
+                    epi.setQuantidade(rs.getInt("quantidade"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar EPI por ID: " + e.getMessage());
+        }
+
+        return epi;
+    }
+
+
+    public void atualizarEpi() {
+        Epi epi = buscarEpi();
+        if (epi == null) return;
+
+        while (true) {
+            try {
                 System.out.print("1. Atualizar nome \n2. Atualizar quantidade\n3. Voltar\nDigite uma opção: ");
                 int opcao = scanner.nextInt();
                 scanner.nextLine();
 
+                String sql = "";
                 if (opcao == 1) {
-                    System.out.print("\nNovo nome: ");
-                    epi.setNome(scanner.nextLine());
+                    System.out.print("Novo nome: ");
+                    String novoNome = scanner.nextLine();
+                    sql = "UPDATE epis SET nome = ? WHERE id_epi = ?";
+                    try (Connection conn = Conexao.conectar();
+                         PreparedStatement stmt = conn.prepareStatement(sql)) {
+                        stmt.setString(1, novoNome);
+                        stmt.setInt(2, epi.getId());
+                        stmt.executeUpdate();
+                        System.out.println("Nome atualizado com sucesso!");
+                    }
                 } else if (opcao == 2) {
                     System.out.print("Nova quantidade: ");
-                    epi.setQuantidade(scanner.nextInt());
+                    int novaQtd = scanner.nextInt();
                     scanner.nextLine();
+                    sql = "UPDATE epis SET quantidade = ? WHERE id_epi = ?";
+                    try (Connection conn = Conexao.conectar();
+                         PreparedStatement stmt = conn.prepareStatement(sql)) {
+                        stmt.setInt(1, novaQtd);
+                        stmt.setInt(2, epi.getId());
+                        stmt.executeUpdate();
+                        System.out.println("Quantidade atualizada com sucesso!");
+                    }
                 } else if (opcao == 3) break;
                 else {
-                    throw new IllegalArgumentException("Opção inválida. Tente novamente: ");
+                    System.out.println("Opção inválida.");
                 }
-                System.out.println("EPI atualizada com sucesso!\n");
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada inválida. Digite um número válido.");
-                scanner.nextLine();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Erro ao atualizar EPI: " + e.getMessage());
+                scanner.nextLine();
             }
         }
     }
-    public void removerEpi(){
-        try{
-            Epi epi = buscarEpi();
-            if(epi != null) {
-                epis.remove(epi);
-                System.out.println("EPI removida com sucesso!");
+
+    public void removerEpi() {
+        Epi epi = buscarEpi();
+        if (epi == null) return;
+
+        String verificaEmprestimoSql = "SELECT COUNT(*) FROM emprestimos WHERE epi_id = ?";
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(verificaEmprestimoSql)) {
+            stmt.setInt(1, epi.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    throw new SQLException("Não é possível remover o EPI, pois ele está sendo utilizado em um ou mais empréstimos.");
+                }
+
+                String sql = "DELETE FROM epis WHERE id_epi = ?";
+                try (PreparedStatement deleteStmt = conn.prepareStatement(sql)) {
+                    deleteStmt.setInt(1, epi.getId());
+                    deleteStmt.executeUpdate();
+                    System.out.println("EPI removido com sucesso!");
+                }
+
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Erro ao remover EPI: Não é possível remover o EPI, pois ele está sendo utilizado em um ou mais empréstimos.");
         }
     }
 
 }
+
