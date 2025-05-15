@@ -78,7 +78,7 @@ public class GerenciadorEpi {
                 int indice = scanner.nextInt();
                 scanner.nextLine();
 
-                return epis.get(indice - 1);
+                return buscarEpiPorId(indice);
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Índice inválido. Tente novamente.");
                 scanner.nextLine();

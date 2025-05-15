@@ -74,11 +74,7 @@ public class GerenciadorUsuario {
                 int indice = scanner.nextInt();
                 scanner.nextLine();
 
-                if (indice < 1 || indice > usuarios.size()) {
-                    System.out.println("Índice inválido. Tente novamente.");
-                } else {
-                    return usuarios.get(indice - 1);
-                }
+                return buscarUsuarioPorId(indice);
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número válido.");
                 scanner.nextLine();
@@ -157,21 +153,28 @@ public class GerenciadorUsuario {
         Usuario usuario = buscarUsuario();
         if (usuario == null) return;
 
-        String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
+        String verificaEmprestimoSql = "SELECT COUNT(*) FROM emprestimos WHERE usuario_id = ?";
 
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(verificaEmprestimoSql)) {
 
             stmt.setInt(1, usuario.getId());
-            int linhasAfetadas = stmt.executeUpdate();
-            if (linhasAfetadas > 0) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    throw new SQLException("Não é possível remover o usuário, pois ele está sendo utilizado em um ou mais empréstimos.");
+                }
+            }
+            String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
+            try (PreparedStatement deleteStmt = conn.prepareStatement(sql)) {
+                deleteStmt.setInt(1, usuario.getId());
+                deleteStmt.executeUpdate();
                 System.out.println("Usuário removido com sucesso!");
-            } else {
-                System.out.println("Nenhum usuário encontrado com o ID informado.");
             }
 
+
         } catch (SQLException e) {
-            System.out.println("Erro ao remover usuário: " + e.getMessage());
+            System.out.println("Erro ao remover usuário:" + e.getMessage());
         }
     }
 }
