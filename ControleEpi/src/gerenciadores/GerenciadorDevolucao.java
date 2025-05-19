@@ -153,21 +153,4 @@ public class GerenciadorDevolucao {
         }
     }
 
-    public void removerDevolucao() {
-        try {
-            Devolucao devolucao = buscarDevolucao();
-            if (devolucao != null) {
-                String sql = "DELETE FROM devolucoes WHERE id_devolucao = ?";
-                try (Connection conn = Conexao.conectar();
-                     PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-                    stmt.setInt(1, devolucao.getId());
-                    stmt.executeUpdate();
-                    System.out.println("Devolução removida com sucesso!");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

@@ -215,24 +215,4 @@ public class GerenciadorEmprestimo {
         }
     }
 
-    public void removerEmprestimo() {
-        Emprestimo emprestimo = buscarEmprestimo();
-        if (emprestimo == null) return;
-
-        try {
-            String sql = "DELETE FROM emprestimos WHERE id = ?";
-            try (Connection conn = Conexao.conectar();
-                 PreparedStatement stmt = conn.prepareStatement(sql)){
-                stmt.setInt(1, emprestimo.getId());
-                stmt.executeUpdate();
-            }
-
-            Epi epi = emprestimo.getEpi();
-            epi.setQuantidade(epi.getQuantidade() + 1);
-
-            System.out.println("Empréstimo removido com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Erro ao remover empréstimo: " + e.getMessage());
-        }
-    }
 }

@@ -34,38 +34,49 @@ public class Main {
                         "0. Sair");
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
-                scanner.nextLine();  // Limpar o buffer
+                scanner.nextLine();
                 return opcao;
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Digite um número inteiro.");
-                scanner.nextLine();  // Limpar o buffer
+                scanner.nextLine();
             }
         }
     }
 
-    private static int escolherCRUD() {
+    private static int escolherCRUD(int opcaoCrud) {
         while (true) {
             try {
-                System.out.println("\n1. Cadastrar\n" +
-                        "2. Listar\n" +
-                        "3. Atualizar\n" +
-                        "4. Remover\n" +
-                        "5. Voltar");
+                if(opcaoCrud == 3 || opcaoCrud == 4){
+                    System.out.println("\n1. Cadastrar\n" +
+                            "2. Listar\n" +
+                            "3. Atualizar\n" +
+                            "4. Voltar");
+                }else{
+                    System.out.println("\n1. Cadastrar\n" +
+                            "2. Listar\n" +
+                            "3. Atualizar\n" +
+                            "4. Remover\n" +
+                            "5. Voltar");
+                }
+
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
-                scanner.nextLine();  // Limpar o buffer
+                scanner.nextLine();
                 return opcao;
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Digite um número inteiro.");
-                scanner.nextLine();  // Limpar o buffer
+                scanner.nextLine();
             }
         }
     }
-
     private static void processarOpcaoPrincipal(int opcao) {
         while (true) {
-            int opcaoCRUD = escolherCRUD();
-            if (opcaoCRUD == 5) break;
+            int opcaoCRUD = escolherCRUD(opcao);
+            if(opcao == 3 || opcao == 4){
+                if(opcaoCRUD == 4) break;
+            }else{
+                if(opcaoCRUD == 5) break;
+            }
 
             switch (opcao) {
                 case 1 -> processarCRUDUsuario(opcaoCRUD);
@@ -102,7 +113,6 @@ public class Main {
             case 1 -> gerenciadorEmprestimo.criarEmprestimo();
             case 2 -> gerenciadorEmprestimo.listarEmprestimos();
             case 3 -> gerenciadorEmprestimo.atualizarEmprestimo();
-            case 4 -> gerenciadorEmprestimo.removerEmprestimo();
             default -> System.out.println("Opção inválida.");
         }
     }
@@ -112,7 +122,6 @@ public class Main {
             case 1 -> gerenciadorDevolucao.criarDevolucao();
             case 2 -> gerenciadorDevolucao.listarDevolucoes();
             case 3 -> gerenciadorDevolucao.atualizarDevolucao();
-            case 4 -> gerenciadorDevolucao.removerDevolucao();
             default -> System.out.println("Opção inválida.");
         }
     }
